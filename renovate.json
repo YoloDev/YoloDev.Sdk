@@ -1,0 +1,12 @@
+{
+  "extends": ["config:base"],
+  "regexManagers": [
+    {
+      "fileMatch": ["\\.(?:cs|fs|vb)?proj$", "\\.(?:props|targets)$"],
+      "matchStrings": [
+        "<Import[^\\/>]+Sdk=\\\"(?<depName>.*?)\\\"[^\\/>]+Version=\\\"(?<currentValue>.*?)\\\"[^\\/>]\\/>"
+      ],
+      "datasourceTemplate": "nuget"
+    }
+  ]
+}
