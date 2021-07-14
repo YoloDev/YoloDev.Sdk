@@ -1,0 +1,18 @@
+<Project>
+
+  <!-- Dogfooding -->
+  <Import Project="$(MSBuildThisFileDirectory)src\YoloDev.Sdk\Sdk\Sdk.props" />
+
+  <PropertyGroup>
+    <DefaultItemExcludes>*log</DefaultItemExcludes>
+    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
+    <LangVersion>Latest</LangVersion>
+    <NoWarn>$(NoWarn);NU5128;SA0001</NoWarn>
+    <TargetFrameworks>net472;net5.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>YoloDev</Authors>
+  </PropertyGroup>
+
+</Project>

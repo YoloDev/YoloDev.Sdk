@@ -1,0 +1,25 @@
+<Project>
+
+  <PropertyGroup Condition=" '$(EnableSourceLink)' == 'true' ">
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl Condition=" '$(PublishRepositoryUrl)' == '' ">true</PublishRepositoryUrl>
+    <Deterministic>true</Deterministic>
+    <IncludeSymbols Condition=" '$(IncludeSymbols)' == '' ">true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup  Condition=" '$(EnableSourceLink)' == 'true' ">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" IsImplicitlyDefined="true" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="_SetPackageProjectUrlFromSourceController"
+          AfterTargets="SourceControlManagerPublishTranslatedUrls"
+          Condition=" '$(EnableSourceLink)' == 'true' ">
+
+    <PropertyGroup>
+      <PackageProjectUrl Condition=" $(PrivateRepositoryUrl.StartsWith('https://github.com/')) and '$(PackageProjectUrl)' == '' and '$(PublishRepositoryUrl)' == 'true' ">$(PrivateRepositoryUrl.TrimEnd('.git'))</PackageProjectUrl>
+    </PropertyGroup>
+
+  </Target>
+
+</Project>

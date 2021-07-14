@@ -1,0 +1,8 @@
+<Project>
+
+  <Import Project="$(MSBuildThisFileDirectory)Root.props" />
+  <Import Project="$(MSBuildThisFileDirectory)GitVersion.props" />
+  <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
+  <Import Project="$(MSBuildThisFileDirectory)Artifacts.props" />
+
+</Project>

@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup Condition="'$(GitVersionEnable)' == 'true'">
+    <Version>$(_GitVersionAssemblyVer)</Version>
+    <FileVersion>$(_GitVersionAssemblyVer)</FileVersion>
+    <InformationalVersion>$(_GitVersionInformational)</InformationalVersion>
+    <PackageVersion>$(_GitVersionSemVer)</PackageVersion>
+    <PackageVersion Condition="'$(GitVersionForcePrerelease)' == 'true'">$(_GitVersionSemVerPreRelease)</PackageVersion>
+  </PropertyGroup>
+
+</Project>

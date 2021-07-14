@@ -1,0 +1,18 @@
+<Project>
+
+  <PropertyGroup Condition=" '$(ProjectType)' == 'SdkProject' ">
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageType>MSBuildSdk</PackageType>
+    <PackageTags>MSBuild MSBuildSdk</PackageTags>
+    <IncludeSymbols>false</IncludeSymbols>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(ProjectType)' == 'SdkProject' ">
+    <None Include="Sdk\**" Pack="true" PackagePath="Sdk\" />
+  </ItemGroup>
+
+  <!-- Dogfooding -->
+  <Import Project="$(MSBuildThisFileDirectory)src\YoloDev.Sdk\Sdk\Sdk.targets" />
+
+</Project>

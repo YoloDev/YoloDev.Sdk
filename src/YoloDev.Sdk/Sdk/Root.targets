@@ -1,0 +1,10 @@
+<Project InitialTargets="_CheckProjectRoot">
+
+  <Target Name="_CheckProjectRoot" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Error
+      Text="Project root was not found. Make sure the project root contains a global.json file."
+      File="$(MSBuildProjectFullPath)"
+      Condition=" '$(ProjectRootPath)' == '' " />
+  </Target>
+
+</Project>

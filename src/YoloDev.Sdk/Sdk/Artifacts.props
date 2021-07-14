@@ -1,0 +1,12 @@
+<Project>
+
+  <PropertyGroup Condition=" '$(EnableArtifacts)' == '' ">
+    <EnableArtifacts>false</EnableArtifacts>
+    <EnableArtifacts Condition=" '$(Configuration)' == 'Release' ">true</EnableArtifacts>
+    <BaseArtifactsPath Condition=" '$(BaseArtifactsPath)' == '' ">$(ProjectRootPath)artifacts\</BaseArtifactsPath>
+    <ProjectArtifactsDir Condition=" '$(ProjectArtifactsDir)' == '' ">$(MSBuildProjectName)\</ProjectArtifactsDir>
+    <DefaultArtifactsFileMatch>*exe *dll *exe.config *nupkg *xml *json *config</DefaultArtifactsFileMatch>
+    <CopyArtifactsAfterTargets>Pack</CopyArtifactsAfterTargets>
+  </PropertyGroup>
+
+</Project>

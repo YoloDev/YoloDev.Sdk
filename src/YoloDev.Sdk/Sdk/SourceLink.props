@@ -1,0 +1,8 @@
+<Project>
+
+  <PropertyGroup>
+    <EnableSourceLink>false</EnableSourceLink>
+    <EnableSourceLink Condition=" '$(Configuration)' == 'Release' ">true</EnableSourceLink>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+<Project>
+
+  <!-- look for global.json -->
+  <PropertyGroup Condition=" '$(ProjectRootPath)' == '' ">
+    <_ProjectRootFile>global.json</_ProjectRootFile>
+    <_ProjectRootDirectoryName>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), '$(_ProjectRootFile)'))</_ProjectRootDirectoryName>
+    <ProjectRootPath Condition=" '$(_ProjectRootDirectoryName)' != '' ">$([MSBuild]::EnsureTrailingSlash('$(_ProjectRootDirectoryName)'))</ProjectRootPath>
+  </PropertyGroup>
+
+</Project>

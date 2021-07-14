@@ -1,0 +1,34 @@
+<Project>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NU5105;CS7035;CS1591</NoWarn>
+    <GitVersionEnable Condition="'$(GitVersionEnable)' == ''">true</GitVersionEnable>
+    <GitVersionForcePrerelease Condition="'$(GitVersionForcePrerelease)' == ''">false</GitVersionForcePrerelease>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="
+      '$(GitVersion_SemVer)' != '' and
+      '$(GitVersion_AssemblyVer)' != '' and
+      '$(GitVersion_Informational)' != ''
+    ">
+      <PropertyGroup>
+        <_GitVersionSemVer>$(GitVersion_SemVer)</_GitVersionSemVer>
+        <_GitVersionAssemblyVer>$(GitVersion_AssemblyVer)</_GitVersionAssemblyVer>
+        <_GitVersionInformational>$(GitVersion_Informational)</_GitVersionInformational>
+        <_GitVersionSemVerPreRelease Condition="$(_GitVersionSemVer.Contains('-'))">$(_GitVersionSemVer)</_GitVersionSemVerPreRelease>
+        <_GitVersionSemVerPreRelease Condition="!$(_GitVersionSemVer.Contains('-'))">$(_GitVersionSemVer)-pre.0</_GitVersionSemVerPreRelease>
+      </PropertyGroup>
+    </When>
+
+    <Otherwise>
+      <PropertyGroup>
+        <_GitVersionSemVer>0.0.0-local.0</_GitVersionSemVer>
+        <_GitVersionAssemblyVer>0.0.0.0</_GitVersionAssemblyVer>
+        <_GitVersionInformational>0.0.0-local.0+dirty</_GitVersionInformational>
+        <_GitVersionSemVerPreRelease>$(_GitVersionSemVer)</_GitVersionSemVerPreRelease>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>

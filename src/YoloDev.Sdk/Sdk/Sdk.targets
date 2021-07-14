@@ -1,0 +1,8 @@
+<Project>
+
+  <Import Project="$(MSBuildThisFileDirectory)Root.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)GitVersion.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)SourceLink.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)Artifacts.targets" />
+
+</Project>

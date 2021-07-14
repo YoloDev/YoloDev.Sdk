@@ -1,0 +1,40 @@
+<Project>
+
+  <PropertyGroup Condition="'$(EnableArtifacts)' != 'false'">
+    <ArtifactsPath Condition="'$(ArtifactsPath)' == ''">$(BaseArtifactsPath)$(ProjectArtifactsDir)</ArtifactsPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableArtifacts)' != 'false'">
+    <PackageReference Include="Microsoft.Build.Artifacts" Version="2.2.0" IsImplicitlyDefined="true" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Single target build -->
+  <ItemGroup Condition="
+    '$(EnableArtifacts)' != 'false' and
+    '$(EnableDefaultArtifacts)' != 'false' and
+    '$(ArtifactsPath)' != '' and
+    '$(DefaultArtifactsSource)' != '' and
+    '$(TargetFrameworks)' == ''
+  ">
+    <Artifact
+      Include="$(DefaultArtifactsSource)"
+      DestinationFolder="$(BaseArtifactsPath)nuget\"
+      FileMatch="*nupkg"
+      DirExclude="ref" />
+  </ItemGroup>
+
+  <!-- Multi target built -->
+  <ItemGroup Condition="
+    '$(EnableArtifacts)' != 'false' and
+    '$(EnableDefaultArtifacts)' != 'false' and
+    '$(ArtifactsPath)' != '' and
+    '$([MSBuild]::ValueOrDefault($(DefaultArtifactsSource), $(OutputPath)))' != ''
+  ">
+    <Artifact
+      Include="$([MSBuild]::ValueOrDefault($(DefaultArtifactsSource), $(OutputPath)))"
+      DestinationFolder="$(BaseArtifactsPath)nuget\"
+      FileMatch="*nupkg"
+      DirExclude="ref" />
+  </ItemGroup>
+
+</Project>
