@@ -37,7 +37,7 @@ jobs:
           useConfigFile: true
 
       - name: 🔽 Restore
-        run: dotnet restore --configuration Release
+        run: dotnet restore -p:Configuration=Release
         env:
           GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
           GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
