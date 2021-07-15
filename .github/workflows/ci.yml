@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    env:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+
+    steps:
+      - name: 🔽 Install dotnet
+        uses: actions/setup-dotnet@v1
+
+      - name: 🔽 Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.10
+        with:
+          versionSpec: '5.x'
+
+      - name: 🔍 Print dotnet info
+        run: dotnet --info
+
+      - name: ⏬ Checkout
+        uses: actions/checkout@master
+
+      - name: 🔍 Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.10
+        with:
+          useConfigFile: true
+
+      - name: 🔽 Restore
+        run: dotnet restore --configuration Release
+        env:
+          GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
+          GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
+          GitVersion_Informational: ${{ steps.gitversion.outputs.informationalVersion }}
+
+      - name: 🔨 Build
+        run: dotnet build --configuration Release --no-restore
+        env:
+          GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
+          GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
+          GitVersion_Informational: ${{ steps.gitversion.outputs.informationalVersion }}
+
+      - name: 🔨 Pack
+        run: dotnet pack --configuration Release --no-build
+        env:
+          GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
+          GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
+          GitVersion_Informational: ${{ steps.gitversion.outputs.informationalVersion }}
+
+      - name: ⬆️ Upload packages as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget
+          path: artifacts/nuget/
