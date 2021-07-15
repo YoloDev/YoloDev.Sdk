@@ -1,5 +1,14 @@
 <Project>
 
+  <PropertyGroup>
+    <UsingYoloDevSdk>true</UsingYoloDevSdk>
+
+    <!-- Determines if the Razor Sdk is responsible for importing Microsoft.NET.Sdk. Microsoft.NET.Sdk.Web may have previously imported this. -->
+    <_YoloDevSdkImportsMicrosoftNetSdk Condition="'$(UsingMicrosoftNETSdk)' != 'true'">true</_YoloDevSdkImportsMicrosoftNetSdk>
+  </PropertyGroup>
+
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" Condition="'$(_YoloDevSdkImportsMicrosoftNetSdk)' == 'true'" />
+
   <Import Project="$(MSBuildThisFileDirectory)Root.props" />
   <Import Project="$(MSBuildThisFileDirectory)GitVersion.props" />
   <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
