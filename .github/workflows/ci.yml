@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: 🔽 Install dotnet
         uses: actions/setup-dotnet@v1
+        env:
+          ACTIONS_RUNNER_DEBUG: 'true'
 
       - name: 🔽 Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.9.10
@@ -36,26 +38,14 @@ jobs:
         with:
           useConfigFile: true
 
-      # - name: 🔽 Restore
-      #   run: dotnet restore -p:Configuration=Release
-      #   env:
-      #     GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
-      #     GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
-      #     GitVersion_Informational: ${{ steps.gitversion.outputs.informationalVersion }}
+      - name: 🔽 Restore
+        run: dotnet restore -p:Configuration=Release
 
       - name: 🔨 Build
         run: dotnet build --configuration Release
-        env:
-          GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
-          GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
-          GitVersion_Informational: ${{ steps.gitversion.outputs.informationalVersion }}
 
       - name: 🔨 Pack
         run: dotnet pack --configuration Release --no-build
-        env:
-          GitVersion_SemVer: ${{ steps.gitversion.outputs.fullSemVer }}
-          GitVersion_AssemblyVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}
-          GitVersion_Informational: ${{ steps.gitversion.outputs.informationalVersion }}
 
       - name: ⬆️ Upload packages as artifact
         uses: actions/upload-artifact@v2

@@ -8,14 +8,14 @@
 
   <Choose>
     <When Condition="
-      '$(GitVersion_SemVer)' != '' and
-      '$(GitVersion_AssemblyVer)' != '' and
-      '$(GitVersion_Informational)' != ''
+      '$(GitVersion_FullSemVer)' != '' and
+      '$(GitVersion_AssemblySemFileVer)' != '' and
+      '$(GitVersion_InformationalVersion)' != ''
     ">
       <PropertyGroup>
-        <_GitVersionSemVer>$(GitVersion_SemVer)</_GitVersionSemVer>
-        <_GitVersionAssemblyVer>$(GitVersion_AssemblyVer)</_GitVersionAssemblyVer>
-        <_GitVersionInformational>$(GitVersion_Informational)</_GitVersionInformational>
+        <_GitVersionSemVer>$(GitVersion_FullSemVer)</_GitVersionSemVer>
+        <_GitVersionAssemblyVer>$(GitVersion_AssemblySemFileVer)</_GitVersionAssemblyVer>
+        <_GitVersionInformational>$(GitVersion_InformationalVersion)</_GitVersionInformational>
         <_GitVersionSemVerPreRelease Condition="$(_GitVersionSemVer.Contains('-'))">$(_GitVersionSemVer)</_GitVersionSemVerPreRelease>
         <_GitVersionSemVerPreRelease Condition="!$(_GitVersionSemVer.Contains('-'))">$(_GitVersionSemVer)-pre.0</_GitVersionSemVerPreRelease>
       </PropertyGroup>
