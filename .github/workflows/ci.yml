@@ -46,7 +46,7 @@ jobs:
       - name: 📦 Pack
         run: dotnet pack --configuration Release --no-build
 
-      - name: Test (build samples)
+      - name: 🧪 Test (build samples)
         run: dotnet build -p:YoloDevSdkVersion=${{ steps.gitversion.outputs.fullSemVer }}
         working-directory: sample
 
