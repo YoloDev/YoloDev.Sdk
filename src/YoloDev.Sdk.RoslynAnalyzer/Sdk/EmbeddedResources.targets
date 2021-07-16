@@ -1,0 +1,25 @@
+<Project>
+
+  <Target Name="_EmbeddProjectReferencesAndSources" BeforeTargets="AssignTargetPaths">
+    <CallTarget Targets="ResolveProjectReferences">
+      <Output TaskParameter="TargetOutputs" ItemName="__ProjectReferencesToEmbedd" />
+    </CallTarget>
+
+    <ItemGroup>
+      <__SourcesToEmbedd Include="@(EmbeddedSources)" Condition="'@(EmbeddedSources->Count())' > 0">
+        <BaseDirectory>$([System.IO.Path]::GetFullPath('%(EmbeddedSources.BaseDirectory)'))</BaseDirectory>
+        <BaseDirectory Condition=" '%(__SourcesToEmbedd.BaseDirectory)' == '' ">$(MSBuildProjectDirectory)</BaseDirectory>
+        <RelativePath>$([MSBuild]::MakeRelative('%(__SourcesToEmbedd.BaseDirectory)', '%(EmbeddedSources.FullPath)'))</RelativePath>
+      </__SourcesToEmbedd>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="@(__SourcesToEmbedd)" LogicalName="src/%(__SourcesToEmbedd.RelativePath)" />
+      <EmbeddedResource Include="@(__ProjectReferencesToEmbedd->'%(Identity)')" LogicalName="refs/$([System.IO.Path]::GetFileName('%(__ProjectReferencesToEmbedd.Identity)'))" />
+      <EmbeddedResource Include="@(RuntimeCopyLocalItems)" LogicalName="refs/$([System.IO.Path]::GetFileName('%(RuntimeCopyLocalItems.Identity)'))" />
+
+      <__ProjectReferencesToEmbedd Remove="@(__ProjectReferencesToEmbedd)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

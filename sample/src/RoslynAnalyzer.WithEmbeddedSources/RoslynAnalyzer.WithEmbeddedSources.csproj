@@ -1,0 +1,2 @@
+<Project Sdk="YoloDev.Sdk.RoslynAnalyzer/$(YoloDevSdkVersion)">
+</Project>
