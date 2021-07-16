@@ -46,6 +46,10 @@ jobs:
       - name: 📦 Pack
         run: dotnet pack --configuration Release --no-build
 
+      - name: Test (build samples)
+        run: dotnet build -p:YoloDevSdkVersion=${{ steps.gitversion.outputs.fullSemVer }}
+        working-directory: sample
+
       - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
         with:
