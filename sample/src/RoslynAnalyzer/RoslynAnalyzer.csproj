@@ -1,0 +1,5 @@
+<Project>
+  <Import Sdk="YoloDev.Sdk.RoslynAnalyzer" Project="Sdk.props" Version="$(YoloDevSdkVersion)" />
+
+  <Import Sdk="YoloDev.Sdk.RoslynAnalyzer" Project="Sdk.targets" Version="$(YoloDevSdkVersion)" />
+</Project>

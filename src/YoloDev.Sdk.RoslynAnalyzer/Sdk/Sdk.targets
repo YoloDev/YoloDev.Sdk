@@ -2,9 +2,6 @@
 
   <Import Sdk="YoloDev.Sdk" Project="Sdk.targets" Version="$$VERSION$$" Condition="'$(_YoloDevSdkRoslynAnalyzerImportsYoloDevSdk)' == 'true'" />
 
-  <!-- <Import Project="$(MSBuildThisFileDirectory)Root.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)GitVersion.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)SourceLink.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)Artifacts.targets" /> -->
+  <Import Project="$(MSBuildThisFileDirectory)EmbeddedResources.targets" />
 
 </Project>
