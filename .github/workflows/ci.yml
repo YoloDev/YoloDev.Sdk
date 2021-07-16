@@ -7,7 +7,14 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
 
     env:
       DOTNET_NOLOGO: 'true'
@@ -52,12 +59,14 @@ jobs:
 
       - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: nuget
           path: artifacts/nuget/
 
       - name: 🔼 Upload global.json as artifact
         uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: global-json
           path: global.json
