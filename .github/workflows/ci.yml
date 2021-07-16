@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      DOTNET_NOLOGO: 'true'
+      DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
 
     steps:
       - name: ⏬ Checkout
@@ -42,11 +43,42 @@ jobs:
       - name: 🔨 Build
         run: dotnet build --configuration Release
 
-      - name: 🔨 Pack
+      - name: 📦 Pack
         run: dotnet pack --configuration Release --no-build
 
-      - name: ⬆️ Upload packages as artifact
+      - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
         with:
           name: nuget
           path: artifacts/nuget/
+
+      - name: 🔼 Upload global.json as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: global-json
+          path: global.json
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    environment: nuget
+    needs:
+      - build
+
+    steps:
+      - name: 🔽 Download global.json artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: global-json
+
+      - name: 🔽 Download global.json artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget
+
+      - name: 🔽 Install dotnet
+        uses: actions/setup-dotnet@v1
+
+      - name: 🔼 Publish package to nuget
+        run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "*.nupkg"
