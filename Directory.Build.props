@@ -3,12 +3,17 @@
   <!-- Dogfooding -->
   <Import Project="$(MSBuildThisFileDirectory)src\YoloDev.Sdk\Sdk\Sdk.props" />
 
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+
   <PropertyGroup>
     <DefaultItemExcludes>*log</DefaultItemExcludes>
     <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
     <LangVersion>Latest</LangVersion>
     <NoWarn>$(NoWarn);NU5128;SA0001</NoWarn>
     <TargetFrameworks>net472;net5.0</TargetFrameworks>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup>
