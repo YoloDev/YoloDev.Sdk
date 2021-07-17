@@ -84,7 +84,6 @@ jobs:
       - name: 🏷️ Create GitHub Tag
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets. }}
           script: |
             github.git.createRef({
               owner: context.repo.owner,
