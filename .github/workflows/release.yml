@@ -49,6 +49,9 @@ jobs:
       - name: 📦 Pack
         run: dotnet pack --configuration Release --no-build
 
+      - name: 🔧 Create local tag
+        run: git tag "v${{ steps.gitversion.outputs.fullSemVer }}"
+
       - name: 📝 Create changelog
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v2
@@ -57,14 +60,12 @@ jobs:
 
       - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: nuget
           path: artifacts/nuget/
 
       - name: 🔼 Upload global.json as artifact
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: global-json
           path: global.json
