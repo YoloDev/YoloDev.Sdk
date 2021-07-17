@@ -70,28 +70,3 @@ jobs:
         with:
           name: global-json
           path: global.json
-
-  publish:
-    name: Publish
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
-    environment: nuget
-    needs:
-      - build
-
-    steps:
-      - name: 🔽 Download global.json artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: global-json
-
-      - name: 🔽 Download global.json artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: nuget
-
-      - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@v1
-
-      - name: 🔼 Publish package to nuget
-        run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "*.nupkg"
