@@ -13,5 +13,6 @@
   <Import Project="$(MSBuildThisFileDirectory)GitVersion.props" />
   <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
   <Import Project="$(MSBuildThisFileDirectory)Artifacts.props" />
+  <Import Project="$(MSBuildThisFileDirectory)CentralPackageVersions.props" />
 
 </Project>
