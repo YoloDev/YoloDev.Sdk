@@ -107,7 +107,7 @@ jobs:
       - name: 🖃 Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: true
+          prerelease: false
           tag_name: v${{ needs.build.outputs.version }}
           body: ${{ needs.build.outputs.changelog }}
           files: |
@@ -115,5 +115,56 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: 🔼 Publish package to nuget
-      #   run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "*.nupkg"
+  githubpkg:
+    name: Push to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    needs:
+      - build
+      - release
+
+    steps:
+      - name: 🔽 Download nuget artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget
+          path: nuget
+
+      - name: 🔽 Download global-json artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: global-json
+
+      - name: 🔽 Install dotnet
+        uses: actions/setup-dotnet@v1
+
+      - name: 🔼 Publish package to nuget
+        run: dotnet nuget push --force-english-output --api-key '${{ secrets.GITHUB_TOKEN }}' --source 'https://nuget.pkg.github.com/YoloDev/index.json' --skip-duplicate "nuget/*.nupkg"
+
+  nuget:
+    name: Push to Nuget
+    runs-on: ubuntu-latest
+    environment: nuget
+    needs:
+      - build
+      - release
+      - githubpkg
+
+    steps:
+      - name: 🔽 Download nuget artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget
+          path: nuget
+
+      - name: 🔽 Download global-json artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: global-json
+
+      - name: 🔽 Install dotnet
+        uses: actions/setup-dotnet@v1
+
+      - name: 🔼 Publish package to nuget
+        run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "nuget/*.nupkg"
