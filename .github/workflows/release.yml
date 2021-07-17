@@ -112,5 +112,8 @@ jobs:
           body: ${{ needs.build.outputs.changelog }}
           files: |
             nuget/*.nupkg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # - name: 🔼 Publish package to nuget
       #   run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "*.nupkg"
