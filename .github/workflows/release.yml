@@ -52,12 +52,6 @@ jobs:
       - name: 🔧 Create local tag
         run: git tag "v${{ steps.gitversion.outputs.fullSemVer }}"
 
-      - name: 📝 Create changelog
-        id: changelog
-        uses: mikepenz/release-changelog-builder-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
         with:
@@ -72,7 +66,6 @@ jobs:
 
     outputs:
       version: ${{ steps.gitversion.outputs.fullSemVer }}
-      changelog: ${{ steps.changelog.outputs.changelog }}
 
   release:
     name: Create Release
@@ -86,7 +79,24 @@ jobs:
         with:
           name: nuget
 
-      - name: Create GitHub Release
+      - name: 🏷️ Create GitHub Tag
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/v${{ needs.build.outputs.version }}",
+              sha: "${{ github.event.workflow_run.head_sha }}",
+            });
+
+      - name: 📝 Create changelog
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🖃 Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           prerelease: true
