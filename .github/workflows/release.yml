@@ -48,9 +48,6 @@ jobs:
       - name: 📦 Pack
         run: dotnet pack --configuration Release --no-build
 
-      - name: 🔧 Create local tag
-        run: git tag "v${{ steps.gitversion.outputs.fullSemVer }}"
-
       - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
         with:
