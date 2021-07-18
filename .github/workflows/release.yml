@@ -74,7 +74,7 @@ jobs:
     environment: release
     concurrency:
       group: release
-      # cancel-in-progress: true
+      cancel-in-progress: true
     needs:
       - build
 
