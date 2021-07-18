@@ -7,6 +7,11 @@
         "<Import[^\\/>]+Sdk=\\\"(?<depName>.*?)\\\"[^\\/>]+Version=\\\"(?<currentValue>.*?)\\\"[^\\/>]\\/>"
       ],
       "datasourceTemplate": "nuget"
+    },
+    {
+      "fileMatch": "global.json",
+      "matchStrings": ["\"(?<depName>[^\"]*?\\.[^\"]*?)\":\\s*\"(?<currentValue>[^\"]*?)\""],
+      "datasourceTemplate": "nuget"
     }
   ]
 }
