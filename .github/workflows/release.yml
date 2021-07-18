@@ -11,7 +11,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    # environment: nuget
 
     steps:
       - name: ⏬ Checkout
@@ -72,6 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    environment: release
+    concurrency:
+      group: release
+      # cancel-in-progress: true
     needs:
       - build
 
@@ -146,9 +149,6 @@ jobs:
     name: Push to Nuget
     runs-on: ubuntu-latest
     environment: nuget
-    concurrency:
-      group: nuget
-      cancel-in-progress: true
     needs:
       - build
       - release
