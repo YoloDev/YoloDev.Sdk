@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup  Condition=" '$(EnableSourceLink)' == 'true' ">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" IsImplicitlyDefined="true" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" IsImplicitlyDefined="true" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="_SetPackageProjectUrlFromSourceController"
