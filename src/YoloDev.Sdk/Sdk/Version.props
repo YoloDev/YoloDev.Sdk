@@ -1,0 +1,10 @@
+<Project>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NU5105;CS7035;CS1591</NoWarn>
+    <VersionTxtEnable Condition="'$(GitVersionEnable)' == ''">true</VersionTxtEnable>
+    <VersionTxtForcePrerelease Condition="'$(GitVersionForcePrerelease)' == ''">false</VersionTxtForcePrerelease>
+    <VersionTxtPath>$(ProjectRootPath)version.txt</VersionTxtPath>
+  </PropertyGroup>
+
+</Project>

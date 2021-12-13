@@ -11,7 +11,7 @@
 
   <Import Project="$(MSBuildThisFileDirectory)Root.props" />
   <Import Project="$(MSBuildThisFileDirectory)ProjectProps.props" />
-  <Import Project="$(MSBuildThisFileDirectory)GitVersion.props" />
+  <Import Project="$(MSBuildThisFileDirectory)Version.props" />
   <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
   <Import Project="$(MSBuildThisFileDirectory)Artifacts.props" />
   <Import Project="$(MSBuildThisFileDirectory)CentralPackageVersions.props" />

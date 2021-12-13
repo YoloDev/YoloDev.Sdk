@@ -3,7 +3,7 @@
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" Condition="'$(_YoloDevSdkImportsMicrosoftNetSdk)' == 'true'" />
 
   <Import Project="$(MSBuildThisFileDirectory)Root.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)GitVersion.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)Version.targets" />
   <Import Project="$(MSBuildThisFileDirectory)SourceLink.targets" />
   <Import Project="$(MSBuildThisFileDirectory)Artifacts.targets" />
 

@@ -1,0 +1,13 @@
+<Project InitialTargets="_ReadVersionTxt">
+
+  <Target Name="_ReadVersionTxt" Condition="'$(VersionTxtEnable)' == 'true'">
+    <Warning Condition="!Exists('$(VersionTxtPath)')" Text="version.txt file not found, expected to be located at: '$(VersionTxtPath)'" Code="YOLOSDK0001" />
+
+    <PropertyGroup Condition="Exists('$(VersionTxtPath)')">
+      <Version>$([System.IO.File]::ReadAllText('$(VersionTxtPath)').Trim())</Version>
+      <PackageVersion>$(Version)</PackageVersion>
+      <VersionPrefix>$(Version)</VersionPrefix>
+    </PropertyGroup>
+  </Target>
+
+</Project>

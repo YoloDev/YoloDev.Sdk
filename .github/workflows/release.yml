@@ -1,43 +1,73 @@
-name: Release
+name: release-please
 
 on:
-  workflow_run:
-    workflows: [CI]
+  push:
     branches: [main]
-    types: [completed]
 
 jobs:
-  build:
-    name: Build
+  release_please:
+    name: Release Please
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+      statuses: write
+
+    steps:
+      - id: release
+        uses: GoogleCloudPlatform/release-please-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          command: manifest
+
+      - id: transform
+        name: Massage output
+        env:
+          PATHS_RELEASED: ${{ steps.release.outputs.paths_released }}
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}
+          UPLOAD_URL: ${{ steps.release.outputs.upload_url }}
+        run: |
+          ANY=$(echo $PATHS_RELEASED | jq '. | length | . > 0')
+          echo "ANY: $ANY"
+          echo "TAG_NAME: '$TAG_NAME'"
+          echo "UPLOAD_URL: '$UPLOAD_URL'"
+          echo "::set-output name=any::$ANY"
+
+      - name: Print outputs
+        env:
+          ANY: ${{ steps.transform.outputs.any }}
+        run: |
+          echo "any: '$ANY'"
+
+    outputs:
+      any_released: ${{ steps.transform.outputs.any }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      upload_url: ${{ steps.release.outputs.upload_url }}
+
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    # if: fromJSON(needs.release_please.outputs.any_released)
+    needs:
+      - release_please
+
+    permissions:
+      contents: write
+
+    concurrency:
+      group: release
 
     steps:
       - name: ⏬ Checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_sha }}
-
-      - name: 🔧 Setup git
-        run: git branch -D main || true; git checkout -b main
 
       - name: 🔽 Install dotnet
         uses: actions/setup-dotnet@v1
 
-      - name: 🔽 Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.11
-        with:
-          versionSpec: '5.x'
-
       - name: 🔍 Print dotnet info
         run: dotnet --info
-
-      - name: 🔍 Determine Version
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.11
-        with:
-          useConfigFile: true
 
       - name: 🔽 Restore
         run: dotnet restore -p:Configuration=Release
@@ -50,121 +80,85 @@ jobs:
 
       - name: 🔼 Upload packages as artifact
         uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: nuget
           path: artifacts/nuget/
 
       - name: 🔼 Upload global.json as artifact
         uses: actions/upload-artifact@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: global-json
           path: global.json
 
-    outputs:
-      version: ${{ steps.gitversion.outputs.fullSemVer }}
+      # - name: 🔽 Download nuget artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: nuget
+      #     path: nuget
 
-  release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    environment: release
-    concurrency:
-      group: release
-      cancel-in-progress: true
-    needs:
-      - build
+      # - name: 🖃 Create GitHub Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     prerelease: false
+      #     tag_name: v${{ needs.build.outputs.version }}
+      #     body: ${{ needs.build.outputs.changelog }}
+      #     files: |
+      #       nuget/*.nupkg
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    steps:
-      - name: 🏷️ Create GitHub Tag
-        uses: actions/github-script@v5
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/tags/v${{ needs.build.outputs.version }}",
-              sha: "${{ github.event.workflow_run.head_sha }}",
-            });
+  # githubpkg:
+  #   name: Push to GitHub Packages
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     packages: write
+  #   needs:
+  #     - build
+  #     - release
 
-      - name: ⏬ Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: refs/tags/v${{ needs.build.outputs.version }}
+  #   steps:
+  #     - name: 🔽 Download nuget artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: nuget
+  #         path: nuget
 
-      - name: 📝 Create changelog
-        id: changelog
-        uses: mikepenz/release-changelog-builder-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: 🔽 Download global-json artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: global-json
 
-      - name: 🔽 Download nuget artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: nuget
-          path: nuget
+  #     - name: 🔽 Install dotnet
+  #       uses: actions/setup-dotnet@v1
 
-      - name: 🖃 Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          prerelease: false
-          tag_name: v${{ needs.build.outputs.version }}
-          body: ${{ needs.build.outputs.changelog }}
-          files: |
-            nuget/*.nupkg
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: 🔼 Publish package to nuget
+  #       run: dotnet nuget push --force-english-output --api-key '${{ secrets.GITHUB_TOKEN }}' --source 'https://nuget.pkg.github.com/YoloDev/index.json' --skip-duplicate "nuget/*.nupkg"
 
-  githubpkg:
-    name: Push to GitHub Packages
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    needs:
-      - build
-      - release
+  # nuget:
+  #   name: Push to Nuget
+  #   runs-on: ubuntu-latest
+  #   environment: nuget
+  #   needs:
+  #     - build
+  #     - release
+  #     - githubpkg
 
-    steps:
-      - name: 🔽 Download nuget artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: nuget
-          path: nuget
+  #   steps:
+  #     - name: 🔽 Download nuget artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: nuget
+  #         path: nuget
 
-      - name: 🔽 Download global-json artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: global-json
+  #     - name: 🔽 Download global-json artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: global-json
 
-      - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@v1
+  #     - name: 🔽 Install dotnet
+  #       uses: actions/setup-dotnet@v1
 
-      - name: 🔼 Publish package to nuget
-        run: dotnet nuget push --force-english-output --api-key '${{ secrets.GITHUB_TOKEN }}' --source 'https://nuget.pkg.github.com/YoloDev/index.json' --skip-duplicate "nuget/*.nupkg"
-
-  nuget:
-    name: Push to Nuget
-    runs-on: ubuntu-latest
-    environment: nuget
-    needs:
-      - build
-      - release
-      - githubpkg
-
-    steps:
-      - name: 🔽 Download nuget artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: nuget
-          path: nuget
-
-      - name: 🔽 Download global-json artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: global-json
-
-      - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@v1
-
-      - name: 🔼 Publish package to nuget
-        run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "nuget/*.nupkg"
+  #     - name: 🔼 Publish package to nuget
+  #       run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "nuget/*.nupkg"
