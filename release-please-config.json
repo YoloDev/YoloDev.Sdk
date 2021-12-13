@@ -20,6 +20,8 @@
     { "type": "deps", "section": "Dependencies" }
   ],
   "packages": {
-    ".": {}
+    ".": {
+      "package-name": "YoloDev.Sdk"
+    }
   }
 }

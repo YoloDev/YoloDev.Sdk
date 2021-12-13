@@ -33,6 +33,14 @@ jobs:
       - name: 🔍 Print dotnet info
         run: dotnet --info
 
+      - id: version
+        name: 🔍 Determine Version
+        shell: bash
+        run: |
+          VERSION=$(cat version.txt)
+          echo "VERSION: '$VERSION'"
+          echo "::set-output name=version::$version"
+
       - name: 🔽 Restore
         run: dotnet restore -p:Configuration=Release
 
@@ -43,7 +51,7 @@ jobs:
         run: dotnet pack --configuration Release --no-build
 
       - name: 🧪 Test (build samples)
-        run: dotnet build -p:YoloDevSdkVersion=${{ steps.gitversion.outputs.fullSemVer }}
+        run: dotnet build -p:YoloDevSdkVersion=${{ steps.version.outputs.version }}
         working-directory: sample
 
       # - name: 🔼 Upload packages as artifact
