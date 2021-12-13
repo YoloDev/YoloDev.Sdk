@@ -47,7 +47,7 @@ jobs:
       upload_url: ${{ steps.release.outputs.upload_url }}
 
   build:
-    name: Create Release
+    name: Build
     runs-on: ubuntu-latest
     # if: fromJSON(needs.release_please.outputs.any_released)
     needs:

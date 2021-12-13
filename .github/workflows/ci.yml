@@ -39,7 +39,7 @@ jobs:
         run: |
           VERSION=$(cat version.txt)
           echo "VERSION: '$VERSION'"
-          echo "::set-output name=version::$version"
+          echo "::set-output name=version::$VERSION"
 
       - name: 🔽 Restore
         run: dotnet restore -p:Configuration=Release
@@ -53,17 +53,3 @@ jobs:
       - name: 🧪 Test (build samples)
         run: dotnet build -p:YoloDevSdkVersion=${{ steps.version.outputs.version }}
         working-directory: sample
-
-      # - name: 🔼 Upload packages as artifact
-      #   uses: actions/upload-artifact@v2
-      #   if: ${{ matrix.os == 'ubuntu-latest' }}
-      #   with:
-      #     name: nuget
-      #     path: artifacts/nuget/
-
-      # - name: 🔼 Upload global.json as artifact
-      #   uses: actions/upload-artifact@v2
-      #   if: ${{ matrix.os == 'ubuntu-latest' }}
-      #   with:
-      #     name: global-json
-      #     path: global.json
