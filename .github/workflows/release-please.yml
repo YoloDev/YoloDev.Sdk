@@ -91,16 +91,18 @@ jobs:
           path: global.json
 
       - name: 🔼 Upload packages as github release asset
-        if: steps.release.outputs.upload_url != ''
+        if: needs.release_please.outputs.upload_url != ''
         uses: shogo82148/actions-upload-release-asset@v1
         with:
-          upload_url: ${{ steps.release.outputs.upload_url }}
+          upload_url: ${{ needs.release_please.outputs.upload_url }}
           asset_path: artifacts/nuget/*
 
   githubpkg:
     name: Push to GitHub Packages
     runs-on: ubuntu-latest
     if: fromJSON(needs.release_please.outputs.any_released)
+    environment: release
+
     needs:
       - release_please
       - build
