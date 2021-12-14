@@ -1,13 +1,16 @@
 <Project InitialTargets="_ReadVersionTxt">
 
+  <PropertyGroup Condition="'$(VersionTxtEnable)' == 'true' and Exists('$(VersionTxtPath)')">
+    <Version>$([System.IO.File]::ReadAllText('$(VersionTxtPath)').Trim())</Version>
+    <Version Condition="'$(PackageReleaseChannel)' != '' and '$(PackageReleaseChannel)' != 'stable'">$(Version)-$(PackageReleaseChannel)</Version>
+    <PackageVersion>$(Version)</PackageVersion>
+    <VersionPrefix Condition="!$(Version.Contains('-'))">$(Version)</VersionPrefix>
+    <VersionPrefix Condition="$(Version.Contains('-'))">$(Version.Split('-')[0])</VersionPrefix>
+    <VersionSuffix Condition="$(Version.Contains('-'))">$(Version.Split('-', 2)[1])</VersionSuffix>
+  </PropertyGroup>
+
   <Target Name="_ReadVersionTxt" Condition="'$(VersionTxtEnable)' == 'true'">
     <Warning Condition="!Exists('$(VersionTxtPath)')" Text="version.txt file not found, expected to be located at: '$(VersionTxtPath)'" Code="YOLOSDK0001" />
-
-    <PropertyGroup Condition="Exists('$(VersionTxtPath)')">
-      <Version>$([System.IO.File]::ReadAllText('$(VersionTxtPath)').Trim())</Version>
-      <PackageVersion>$(Version)</PackageVersion>
-      <VersionPrefix>$(Version)</VersionPrefix>
-    </PropertyGroup>
   </Target>
 
 </Project>
