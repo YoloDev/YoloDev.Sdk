@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.4.0...YoloDev.Sdk-v0.5.0) (2021-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* enable .net analyzers and style validation
+
+### Features
+
+* enable .net analyzers and style validation ([68f123c](https://www.github.com/YoloDev/YoloDev.Sdk/commit/68f123c4bc7f597076e08167e4659db9da559394))
+
 ## [0.4.0](https://www.github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.3.1...YoloDev.Sdk-v0.4.0) (2021-12-14)
 
 
