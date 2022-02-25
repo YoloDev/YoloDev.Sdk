@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
 
       - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
 
       - name: 🔍 Print dotnet info
         run: dotnet --info
