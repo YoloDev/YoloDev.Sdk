@@ -1,16 +1,14 @@
 {
-  "extends": ["config:base"],
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>YoloDev/renovate-config"
+  ],
   "regexManagers": [
     {
       "fileMatch": ["\\.(?:cs|fs|vb)?proj$", "\\.(?:props|targets)$"],
       "matchStrings": [
         "<Import[^\\/>]+Sdk=\\\"(?<depName>.*?)\\\"[^\\/>]+Version=\\\"(?<currentValue>.*?)\\\"[^\\/>]\\/>"
       ],
-      "datasourceTemplate": "nuget"
-    },
-    {
-      "fileMatch": "global.json",
-      "matchStrings": ["\"(?<depName>[^\"]*?\\.[^\"]*?)\":\\s*\"(?<currentValue>[^\"]*?)\""],
       "datasourceTemplate": "nuget"
     }
   ]
