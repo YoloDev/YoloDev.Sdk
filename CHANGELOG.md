@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.5.0...YoloDev.Sdk-v0.5.1) (2022-06-07)
+
+
+### Dependencies
+
+* update dependency microsoft.build.notargets to v3.5.6 ([#33](https://github.com/YoloDev/YoloDev.Sdk/issues/33)) ([f9abb9e](https://github.com/YoloDev/YoloDev.Sdk/commit/f9abb9e906ebd56ed5e5751e2a27890e4a11ce99))
+
 ## [0.5.0](https://www.github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.4.0...YoloDev.Sdk-v0.5.0) (2021-12-14)
 
 
