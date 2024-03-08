@@ -8,6 +8,5 @@
   <Import Sdk="YoloDev.Sdk" Project="Sdk.props" Version="$$VERSION$$" Condition="'$(_YoloDevSdkRoslynAnalyzerImportsYoloDevSdk)' == 'true'" />
 
   <Import Project="$(MSBuildThisFileDirectory)ProjectProperties.props" />
-  <Import Project="$(MSBuildThisFileDirectory)EmbeddedSources.props" />
 
 </Project>

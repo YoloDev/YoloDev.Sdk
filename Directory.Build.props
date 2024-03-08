@@ -12,7 +12,7 @@
     <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
     <LangVersion>Latest</LangVersion>
     <NoWarn>$(NoWarn);NU5128;SA0001</NoWarn>
-    <TargetFrameworks>net472;net5.0</TargetFrameworks>
+    <TargetFrameworks>net482;net8.0</TargetFrameworks>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
