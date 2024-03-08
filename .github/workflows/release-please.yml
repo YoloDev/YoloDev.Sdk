@@ -8,6 +8,7 @@ jobs:
   release_please:
     name: Release Please
     runs-on: ubuntu-latest
+    if: github.repository == 'YoloDev/YoloDev.Sdk'
 
     permissions:
       contents: write
@@ -16,10 +17,19 @@ jobs:
       statuses: write
 
     steps:
+      # Generating a GitHub token, so that PRs and tags created by
+      # the release-plz-action can trigger actions workflows.
+      - name: Generate GitHub token
+        uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_APP_PRIVATE_KEY }}
+
       - id: release
         uses: GoogleCloudPlatform/release-please-action@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.generate-token.outputs.token }}
           command: manifest
 
       - id: transform
@@ -49,7 +59,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    if: fromJSON(needs.release_please.outputs.any_released)
+    if: fromJSON(needs.release_please.outputs.any_released) && github.repository == 'YoloDev/YoloDev.Sdk'
     needs:
       - release_please
 
@@ -100,7 +110,7 @@ jobs:
   githubpkg:
     name: Push to GitHub Packages
     runs-on: ubuntu-latest
-    if: fromJSON(needs.release_please.outputs.any_released)
+    if: fromJSON(needs.release_please.outputs.any_released) && github.repository == 'YoloDev/YoloDev.Sdk'
     environment: release
 
     needs:
@@ -131,7 +141,7 @@ jobs:
   nuget:
     name: Push to Nuget
     runs-on: ubuntu-latest
-    if: fromJSON(needs.release_please.outputs.any_released)
+    if: fromJSON(needs.release_please.outputs.any_released) && github.repository == 'YoloDev/YoloDev.Sdk'
     environment: nuget
 
     needs:
