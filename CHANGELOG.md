@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.6.0](https://github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.5.1...YoloDev.Sdk-v0.6.0) (2024-03-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove netframework support
+* Make RoslynAnalyzerLib SDK instead
+* update dotnet version
+* update sdk version and remove embedded resources support
+
+### Features
+
+* Make RoslynAnalyzerLib SDK instead ([4be0381](https://github.com/YoloDev/YoloDev.Sdk/commit/4be03811e55311ae36f175cfa0bcde38c537c35c))
+* update dotnet version ([0981ee1](https://github.com/YoloDev/YoloDev.Sdk/commit/0981ee135bc86fc7b5c9234e207104ade3586b47))
+* update sdk version and remove embedded resources support ([0ec8db9](https://github.com/YoloDev/YoloDev.Sdk/commit/0ec8db90a43c30823ae67aad3b1d39f065630d9d))
+
+
+### Miscellaneous Chores
+
+* remove netframework support ([b6ddaa3](https://github.com/YoloDev/YoloDev.Sdk/commit/b6ddaa3085ba61af0ab5579525f6b780bb3f3a92))
+
+
+### Dependencies
+
+* update dependency microsoft.build.artifacts to v4.2.0 ([#35](https://github.com/YoloDev/YoloDev.Sdk/issues/35)) ([e132c32](https://github.com/YoloDev/YoloDev.Sdk/commit/e132c32172b2c0823a2e059142db1ded6899cac6))
+* update dependency microsoft.build.notargets to v3.7.56 ([#39](https://github.com/YoloDev/YoloDev.Sdk/issues/39)) ([44dc595](https://github.com/YoloDev/YoloDev.Sdk/commit/44dc595cfc4e65b7fc6f301e44418a601cd0ebe5))
+* update dependency microsoft.build.traversal to v3.4.0 ([#40](https://github.com/YoloDev/YoloDev.Sdk/issues/40)) ([a590424](https://github.com/YoloDev/YoloDev.Sdk/commit/a5904246441ab4adcff503d2d54c05b918c7eaeb))
+* update dependency microsoft.codeanalysis.analyzers to v3.3.4 ([#38](https://github.com/YoloDev/YoloDev.Sdk/issues/38)) ([c91ee9f](https://github.com/YoloDev/YoloDev.Sdk/commit/c91ee9f8584ccb62a01fe9bae7eefcb48c54f966))
+* update dependency microsoft.codeanalysis.csharp.workspaces to v4.9.2 ([#41](https://github.com/YoloDev/YoloDev.Sdk/issues/41)) ([d96be56](https://github.com/YoloDev/YoloDev.Sdk/commit/d96be56472f36f650bb92a77d62942b3b6434aae))
+
 ## [0.5.1](https://github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.5.0...YoloDev.Sdk-v0.5.1) (2022-06-07)
 
 
