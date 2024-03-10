@@ -58,7 +58,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: fromJSON(needs.release_please.outputs.any_released) && github.repository == 'YoloDev/YoloDev.Sdk'
     needs:
       - release_please
