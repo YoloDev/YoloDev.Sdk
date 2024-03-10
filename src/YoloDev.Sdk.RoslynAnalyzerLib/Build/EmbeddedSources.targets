@@ -1,0 +1,52 @@
+<Project>
+
+  <PropertyGroup Condition=" '$(_AddTfmEmbeddedSourcesToPackAdded)' == '' ">
+    <_AddTfmEmbeddedSourcesToPackAdded>true</_AddTfmEmbeddedSourcesToPackAdded>
+    <TargetsForTfmSpecificContentInPackage>
+      $(TargetsForTfmSpecificContentInPackage);
+      _AddTfmEmbeddedSourcesToPack;
+    </TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Name="_AddTfmEmbeddedSourcesToPack"
+    DependsOnTargets="_CreateEmptyTargetFile;_GenerateEmbeddedTargetsFile">
+
+    <ItemGroup>
+      <!-- <TfmSpecificPackageFile Include="@(EmbeddedSource)"
+        PackagePath="src/$(TargetFramework)/%(EmbeddedSource.Identity)" BuildAction="None" /> -->
+
+      <TfmSpecificPackageFile Include="$(IntermediateOutputPath)_._"
+        PackagePath="lib/$(TargetFramework)/_._" BuildAction="None" />
+    </ItemGroup>
+
+  </Target>
+
+  <Target Name="_CreateEmptyTargetFile" Outputs="$(IntermediateOutputPath)_._">
+
+    <WriteLinesToFile File="$(IntermediateOutputPath)_._" Lines="" Overwrite="true" />
+
+  </Target>
+
+  <Target Name="_GenerateEmbeddedTargetsFile"
+    Inputs="@(EmbeddedSource);$(PackageName)"
+    Outputs="$(IntermediateOutputPath)$(PackageName).props;$(IntermediateOutputPath)$(PackageName).targets">
+
+    <PropertyGroup>
+      <_PackageName>$(PackageName)</_PackageName>
+      <_PackageName Condition="'$(_PackageName)' == ''">$(ProjectName)</_PackageName>
+    </PropertyGroup>
+
+    <GenerateEmbeddedSourcesPropsTask
+      PackageName="$(_PackageName)"
+      TargetFramework="$(TargetFramework)"
+      IntermediateOutputPath="$(IntermediateOutputPath)"
+      GenerateBuildScriptsInPackage="$(GenerateBuildScriptsInPackage)"
+      Sources="@(EmbeddedSource)">
+
+      <Output TaskParameter="FilesToEmbed" ItemName="TfmSpecificPackageFile" />
+
+    </GenerateEmbeddedSourcesPropsTask>
+
+  </Target>
+
+</Project>

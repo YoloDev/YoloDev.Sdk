@@ -2,69 +2,156 @@
 
   <PropertyGroup Condition=" '$(ProjectType)' == 'SdkProject' ">
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageType>MSBuildSdk</PackageType>
     <PackageTags>MSBuild MSBuildSdk</PackageTags>
     <IncludeSymbols>false</IncludeSymbols>
+    <TargetsForTfmSpecificContentInPackage>
+      $(TargetsForTfmSpecificContentInPackage);
+      _AddTfmBuildItemsToPack;
+    </TargetsForTfmSpecificContentInPackage>
     <BeforePack>
-      _BuildSdkItems;
       $(BeforePack);
+      _AddSdkItemsToPack;
     </BeforePack>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(ProjectType)' == 'SdkProject' ">
+  <ItemGroup
+    Condition=" '$(ProjectType)' == 'SdkProject' ">
+
     <AvailableItemName Include="SdkItem" />
-    <SdkItem Include="Sdk\**\*.props" />
-    <SdkItem Include="Sdk\**\*.targets" />
+    <AvailableItemName Include="BuildItem" />
+
   </ItemGroup>
 
-  <!-- Dogfooding -->
-  <Import Project="$(MSBuildThisFileDirectory)src\YoloDev.Sdk\Sdk\Sdk.targets" />
+  <Target Name="_AddSdkItemsToPack" DependsOnTargets="_BuildSdkItems">
 
-  <Target Name="_PrepareSdkItems" Condition="'@(SdkItem->Count())' > 0">
+    <ItemGroup>
+      <_PackageFiles Include="%(SdkItem.IntermediateOutputPath)"
+        PackagePath="%(SdkItem.PackagePath)" BuildAction="SdkItem" />
+    </ItemGroup>
+
+  </Target>
+
+  <Target Name="_AddTfmBuildItemsToPack" DependsOnTargets="_BuildBuildItems;_CreateEmptyTargetFile">
+
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="%(BuildItem.IntermediateOutputPath)"
+        PackagePath="%(BuildItem.PackagePath)" BuildAction="BuildItem" />
+
+      <TfmSpecificPackageFile Include="$(IntermediateOutputPath)_._"
+        PackagePath="lib/$(TargetFramework)/_._" BuildAction="None" />
+    </ItemGroup>
+
+  </Target>
+
+  <Target Name="_CalculateSdkItemsPaths" Condition="'@(SdkItem->Count())' > 0">
 
     <PropertyGroup>
       <_SdkItemsDir>$([System.IO.Path]::GetFullPath('Sdk\'))</_SdkItemsDir>
-      <SdkItemsIntermediateOutputPath>$(IntermediateOutputPath)sdk\</SdkItemsIntermediateOutputPath>
+      <_SdkItemsIntermediateOutputPath>$(IntermediateOutputPath)sdk\</_SdkItemsIntermediateOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
       <_SdkItem Include="@(SdkItem)">
-        <RelativePath>$([MSBuild]::MakeRelative($(_SdkItemsDir), '%(SdkItem.FullPath)'))</RelativePath>
-        <TargetPath>$(SdkItemsIntermediateOutputPath)%(_SdkItem.RelativePath)</TargetPath>
+        <RelativePath Condition="'%(SdkItem.RelativePath)' == ''">$([MSBuild]::MakeRelative($(_SdkItemsDir), '%(SdkItem.FullPath)'))</RelativePath>
+        <IntermediateOutputPath Condition="'%(SdkItem.IntermediateOutputPath)' == ''">$(_SdkItemsIntermediateOutputPath)%(_SdkItem.RelativePath)</IntermediateOutputPath>
       </_SdkItem>
-
-      <SdkItem Remove="@(SdkItem)" />
-      <SdkItem Include="@(_SdkItem)" />
     </ItemGroup>
 
-    <RemoveDir Directories="$(SdkItemsIntermediateOutputPath)" Condition="Exists('$(SdkItemsIntermediateOutputPath)')" />
+    <Error
+      Text="The file '%(_SdkItem.Identity)' is located outside the Sdk folder '$(_SdkItemsDir)' and does not have a PackagePath set"
+      Code="YOLOSDK0001"
+      Condition="$([System.String]::new('%(_SdkItem.RelativePath)').StartsWith('..')) And '%(_SdkItem.PackagePath)' == ''" />
+
+    <ItemGroup>
+      <SdkItem Remove="@(SdkItem)" />
+      <SdkItem Include="@(_SdkItem)">
+        <PackagePath Condition="'%(_SdkItem.PackagePath)' == ''">Sdk\%(_SdkItem.RelativePath)</PackagePath>
+      </SdkItem>
+    </ItemGroup>
+
   </Target>
 
-  <Target Name="_UpdateSdkItems" Inputs="@(SdkItem)" Outputs="%(SdkItem.TargetPath)">
+  <Target Name="_CalculateBuildItemsPaths" Condition="'@(BuildItem->Count())' > 0">
 
-    <Error Text="The file '%(SdkItem.Identity)' is located outside the Sdk folder '$(_SdkItemsDir)'" Code="YOLOSDK0001"
-           Condition="$([System.String]::new('%(SdkItem.RelativePath)').StartsWith('..'))" />
+    <PropertyGroup>
+      <_BuildItemsDir>$([System.IO.Path]::GetFullPath('Build\'))</_BuildItemsDir>
+      <_BuildItemsIntermediateOutputPath>$(IntermediateOutputPath)build\</_BuildItemsIntermediateOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_BuildItem Include="@(BuildItem)">
+        <RelativePath Condition="'%(BuildItem.RelativePath)' == ''">$([MSBuild]::MakeRelative($(_BuildItemsDir), '%(BuildItem.FullPath)'))</RelativePath>
+        <IntermediateOutputPath Condition="'%(BuildItem.IntermediateOutputPath)' == ''">$(_BuildItemsIntermediateOutputPath)%(_BuildItem.RelativePath)</IntermediateOutputPath>
+      </_BuildItem>
+    </ItemGroup>
+
+    <Error
+      Text="The file '%(_BuildItem.Identity)' is located outside the Sdk folder '$(_BuildItemsDir)' and does not have a PackagePath set"
+      Code="YOLOSDK0002"
+      Condition="$([System.String]::new('%(_BuildItem.RelativePath)').StartsWith('..')) And '%(_BuildItem.PackagePath)' == ''" />
+
+    <ItemGroup>
+      <BuildItem Remove="@(BuildItem)" />
+      <BuildItem Include="@(_BuildItem)">
+        <PackagePath Condition="'%(_BuildItem.PackagePath)' == ''">build\$(TargetFramework)\%(_BuildItem.RelativePath)</PackagePath>
+      </BuildItem>
+    </ItemGroup>
+
+  </Target>
+
+  <Target Name="_BuildSdkItems" DependsOnTargets="_CalculateSdkItemsPaths" Inputs="@(SdkItem)"
+    Outputs="%(SdkItem.IntermediateOutputPath)">
 
     <Error Text="The file '%(SdkItem.Identity)' could not be found" Code="YOLOSDK0002"
-           Condition="!Exists('%(SdkItem.FullPath)')" />
+      Condition="!Exists('%(SdkItem.FullPath)')" />
 
     <PropertyGroup>
       <FileContent>$([System.IO.File]::ReadAllText('%(SdkItem.FullPath)'))</FileContent>
       <FileContent>$(FileContent.Replace('$$VERSION$$', '$(PackageVersion)'))</FileContent>
     </PropertyGroup>
 
-     <WriteLinesToFile File="%(SdkItem.TargetPath)" Lines="$(FileContent)" Overwrite="true" />
-  </Target>
+    <WriteLinesToFile File="%(SdkItem.IntermediateOutputPath)" Lines="$(FileContent)"
+      Overwrite="true" />
 
-  <Target Name="_BuildSdkItems" Condition="'@(SdkItem->Count())' > 0" DependsOnTargets="_PrepareSdkItems;_UpdateSdkItems">
-
-    <ItemGroup>
-      <_PackageFiles Include="@(SdkItem -> '%(TargetPath)')" PackagePath="Sdk\">
-        <BuildAction>None</BuildAction>
-      </_PackageFiles>
-    </ItemGroup>
+    <Message Importance="Low"
+      Text="Wrote sdk item '%(SdkItem.Identity)' to '%(SdkItem.IntermediateOutputPath)'" />
 
   </Target>
+
+  <Target Name="_BuildBuildItems" DependsOnTargets="_CalculateBuildItemsPaths" Inputs="@(BuildItem)"
+    Outputs="%(BuildItem.IntermediateOutputPath)">
+
+    <Error Text="The file '%(BuildItem.Identity)' could not be found" Code="YOLOSDK0002"
+      Condition="!Exists('%(BuildItem.FullPath)')" />
+
+    <PropertyGroup>
+      <FileContent>$([System.IO.File]::ReadAllText('%(BuildItem.FullPath)'))</FileContent>
+      <FileContent>$(FileContent.Replace('$$VERSION$$', '$(PackageVersion)'))</FileContent>
+    </PropertyGroup>
+
+    <WriteLinesToFile File="%(BuildItem.IntermediateOutputPath)" Lines="$(FileContent)"
+      Overwrite="true" />
+
+    <Message Importance="Low"
+      Text="Wrote sdk item '%(BuildItem.Identity)' to '%(BuildItem.IntermediateOutputPath)'" />
+
+  </Target>
+
+  <Target Name="_CleanSdkItems" DependsOnTargets="_CalculateSdkItemsPaths" AfterTargets="Clean">
+
+    <Delete Files="@(SdkItem->'%(IntermediateOutputPath)')" />
+
+  </Target>
+
+  <Target Name="_CreateEmptyTargetFile" Outputs="$(IntermediateOutputPath)_._">
+
+    <WriteLinesToFile File="$(IntermediateOutputPath)_._" Lines="" Overwrite="true" />
+
+  </Target>
+
+  <!-- Dogfooding -->
+  <Import
+    Project="$(MSBuildThisFileDirectory)src\YoloDev.Sdk\Sdk\Sdk.targets" />
 
 </Project>

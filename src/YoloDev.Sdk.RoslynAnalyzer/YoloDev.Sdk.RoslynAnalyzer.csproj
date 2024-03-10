@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.Build.NoTargets">
-
-  <PropertyGroup>
-    <ProjectType>SdkProject</ProjectType>
-    <Description>Provides common targets and functionality for YoloDev Roslyn Analyzer projects</Description>
-  </PropertyGroup>
-
-</Project>

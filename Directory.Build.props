@@ -12,12 +12,21 @@
     <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
     <LangVersion>Latest</LangVersion>
     <NoWarn>$(NoWarn);NU5128;SA0001</NoWarn>
-    <TargetFrameworks>net482;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net482;net8.0;netstandard2.0</TargetFrameworks>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup>
     <Authors>YoloDev</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <SdkItem Include="Sdk\**\*.props" />
+    <SdkItem Include="Sdk\**\*.targets" />
+
+    <BuildItem Include="Build\**\*.props" />
+    <BuildItem Include="Build\**\*.targets" />
+  </ItemGroup>
 
 </Project>

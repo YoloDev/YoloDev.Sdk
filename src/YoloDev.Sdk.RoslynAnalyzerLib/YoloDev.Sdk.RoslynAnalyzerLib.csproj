@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectType>SdkProject</ProjectType>
+    <Description>Provides common targets and functionality for YoloDev Roslyn Analyzer projects</Description>
+    <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
+    <NoWarn>$(NoWarn);NU5100</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+<Project Sdk="YoloDev.Sdk.RoslynAnalyzerLib/$(YoloDevSdkVersion)">
+
+  <ItemGroup>
+    <EmbeddedSource Update="NullableAttribute.cs" GroupName="Shims" />
+  </ItemGroup>
+
+</Project>

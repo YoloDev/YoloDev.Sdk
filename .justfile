@@ -22,4 +22,7 @@ build-samples: pack
   #!/usr/bin/env bash
   set -euxo pipefail
   cd sample
+  dotnet clean --configuration {{configuration}} -p:YoloDevSdkVersion={{ version }} || true
+  rm -rf .packages
   dotnet build --configuration {{configuration}} -p:YoloDevSdkVersion={{ version }}
+  dotnet pack --configuration {{configuration}} -p:YoloDevSdkVersion={{ version }} -bl

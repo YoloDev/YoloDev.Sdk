@@ -1,0 +1,21 @@
+<Project>
+
+  <PropertyGroup>
+    <GenerateBuildScriptsInPackage>true</GenerateBuildScriptsInPackage>
+    <NoWarn>$(NoWarn);NU5109</NoWarn>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <EmbeddedSource>
+      <GroupName />
+      <LinkPath />
+    </EmbeddedSource>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <EmbeddedSource Include="**\*.cs" />
+    <EmbeddedSource Remove="obj\**\*.cs" />
+    <EmbeddedSource Remove="bin\**\*.cs" />
+  </ItemGroup>
+
+</Project>

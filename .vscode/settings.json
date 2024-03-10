@@ -1,0 +1,18 @@
+{
+  "xml.format.preserveSpace": [
+    "xsl:text",
+    "xsl:comment",
+    "xsl:processing-instruction",
+    "literallayout",
+    "programlisting",
+    "screen",
+    "synopsis",
+    "pre",
+    "xd:pre",
+    "RelativePath",
+    "IntermediateOutputPath",
+    "PackagePath",
+    "FileContent",
+    "_YoloDev_Sdk_RoslynAnalyzerLib_Assembly"
+  ]
+}

@@ -1,0 +1,8 @@
+<Project>
+
+  <UsingTask TaskName="YoloDev.Sdk.RoslynAnalyzerLib.Tasks.GenerateEmbeddedSourcesPropsTask"
+    AssemblyFile="$(_YoloDev_Sdk_RoslynAnalyzerLib_Assembly)" />
+
+  <Import Project="$(MSBuildThisFileDirectory)EmbeddedSources.targets" />
+
+</Project>

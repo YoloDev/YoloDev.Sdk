@@ -1,0 +1,9 @@
+<Project>
+
+  <PropertyGroup Condition=" '$(_YoloDev_Sdk_RoslynAnalyzerLib_Assembly)' == '' ">
+    <_YoloDev_Sdk_RoslynAnalyzerLib_Assembly>$(MSBuildThisFileDirectory)\YoloDev.Sdk.RoslynAnalyzerLib.dll</_YoloDev_Sdk_RoslynAnalyzerLib_Assembly>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)EmbeddedSources.props" />
+
+</Project>

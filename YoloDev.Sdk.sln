@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BB31E2EB-7BE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDev.Sdk", "src\YoloDev.Sdk\YoloDev.Sdk.csproj", "{79D6C8DA-F3DA-4319-9E25-04A14DEC3A50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDev.Sdk.RoslynAnalyzer", "src\YoloDev.Sdk.RoslynAnalyzer\YoloDev.Sdk.RoslynAnalyzer.csproj", "{A98B8D56-0867-4902-84BF-A25A38056F12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoloDev.Sdk.RoslynAnalyzerLib", "src\YoloDev.Sdk.RoslynAnalyzerLib\YoloDev.Sdk.RoslynAnalyzerLib.csproj", "{A98B8D56-0867-4902-84BF-A25A38056F12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

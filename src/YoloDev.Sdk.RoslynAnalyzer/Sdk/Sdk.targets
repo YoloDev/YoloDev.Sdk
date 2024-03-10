@@ -1,5 +1,0 @@
-<Project>
-
-  <Import Sdk="YoloDev.Sdk" Project="Sdk.targets" Version="$$VERSION$$" Condition=" '$(_YoloDevSdkRoslynAnalyzerImportsYoloDevSdk)' == 'true' " />
-
-</Project>
