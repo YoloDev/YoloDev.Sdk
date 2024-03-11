@@ -89,13 +89,13 @@ jobs:
         run: dotnet pack --configuration Release --no-build
 
       - name: 🔼 Upload packages as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nuget
           path: artifacts/nuget/
 
       - name: 🔼 Upload global.json as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: global-json
           path: global.json
@@ -122,13 +122,13 @@ jobs:
 
     steps:
       - name: 🔽 Download nuget artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: nuget
           path: nuget
 
       - name: 🔽 Download global-json artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: global-json
 
@@ -151,13 +151,13 @@ jobs:
 
     steps:
       - name: 🔽 Download nuget artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: nuget
           path: nuget
 
       - name: 🔽 Download global-json artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: global-json
 
