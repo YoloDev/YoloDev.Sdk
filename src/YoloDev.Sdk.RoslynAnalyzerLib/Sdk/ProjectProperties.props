@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4"
       IsImplicitlyDefined="true" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2"
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0"
       IsImplicitlyDefined="true" PrivateAssets="all" />
     <PackageReference Include="YoloDev.Sdk.RoslynAnalyzerLib" Version="$$VERSION$$"
       IsImplicitlyDefined="true" PrivateAssets="all" />
