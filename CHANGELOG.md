@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.1](https://github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.6.0...YoloDev.Sdk-v0.6.1) (2024-07-10)
+
+
+### Dependencies
+
+* update dependency microsoft.build.artifacts to v6 ([#49](https://github.com/YoloDev/YoloDev.Sdk/issues/49)) ([b70f85e](https://github.com/YoloDev/YoloDev.Sdk/commit/b70f85e1704be550fb5ed6847c812fd1bd4767d5))
+* update dependency microsoft.build.artifacts to v6.1.30 ([#55](https://github.com/YoloDev/YoloDev.Sdk/issues/55)) ([6945075](https://github.com/YoloDev/YoloDev.Sdk/commit/6945075e2d37059ff71385bd7f3da88da6313741))
+* update dependency microsoft.build.traversal to v4 ([#50](https://github.com/YoloDev/YoloDev.Sdk/issues/50)) ([8c010c0](https://github.com/YoloDev/YoloDev.Sdk/commit/8c010c04d6b0a714d508461875d8f6308d6a9640))
+* update dependency microsoft.build.utilities.core to v17.10.4 ([#58](https://github.com/YoloDev/YoloDev.Sdk/issues/58)) ([8d028ea](https://github.com/YoloDev/YoloDev.Sdk/commit/8d028ea7a86ea13d4403782efd29c13bb91563fc))
+* update dependency microsoft.codeanalysis.csharp.workspaces to v4.10.0 ([#60](https://github.com/YoloDev/YoloDev.Sdk/issues/60)) ([eee82a2](https://github.com/YoloDev/YoloDev.Sdk/commit/eee82a2ed1fc7b6ad31b983c48dd70021487b12a))
+* update dependency microsoft.sourcelink.github to v8 ([#51](https://github.com/YoloDev/YoloDev.Sdk/issues/51)) ([63fd8f6](https://github.com/YoloDev/YoloDev.Sdk/commit/63fd8f6720093c5182db9587152fb371a92037ab))
+
 ## [0.6.0](https://github.com/YoloDev/YoloDev.Sdk/compare/YoloDev.Sdk-v0.5.1...YoloDev.Sdk-v0.6.0) (2024-03-10)
 
 
