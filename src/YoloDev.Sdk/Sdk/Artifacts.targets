@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(EnableArtifacts)' != 'false'">
-    <PackageReference Include="Microsoft.Build.Artifacts" Version="6.1.47" IsImplicitlyDefined="true" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Artifacts" Version="6.1.48" IsImplicitlyDefined="true" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Single target build -->
