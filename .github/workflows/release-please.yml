@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
 
       - name: 🔍 Print dotnet info
         run: dotnet --info
@@ -133,7 +133,7 @@ jobs:
           name: global-json
 
       - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
 
       - name: 🔼 Publish package to nuget
         run: dotnet nuget push --force-english-output --api-key '${{ secrets.GITHUB_TOKEN }}' --source 'https://nuget.pkg.github.com/YoloDev/index.json' --skip-duplicate "nuget/*.nupkg"
@@ -162,7 +162,7 @@ jobs:
           name: global-json
 
       - name: 🔽 Install dotnet
-        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
 
       - name: 🔼 Publish package to nuget
         run: dotnet nuget push --force-english-output --api-key '${{ secrets.NUGET_API_KEY }}' --source '${{ secrets.NUGET_FEED }}' --skip-duplicate "nuget/*.nupkg"
